@@ -83,8 +83,8 @@ options=("Yes", "No"))
 MarriedI= st.selectbox(label="Are you married?",
 options=("Yes", "No"))
 
-FemaleI= st.selectbox(label="Do you idenitfy as a woman?",
-options=("Yes", "No"))
+FemaleI= st.selectbox(label="Which gender do you most closely identify with?",
+options=("Female", "Male"))
 
 Age=st.slider("How old are you?")
 
@@ -112,7 +112,7 @@ Parent_Mapping={"Yes":1, "No":0}
 
 Married_Mapping={"Yes":1, "No":0}
 
-Female_Mapping={"Yes":1, "No":0}
+Female_Mapping={"Female":1, "Male":0}
 
 Person2=pd.DataFrame({
     "Income":[IncomeI],
@@ -137,13 +137,64 @@ person=Person2.values.flatten().tolist()
 predicted_class = lr.predict([person])
 probs = lr.predict_proba([person])
 
+Education_Mapping2={"Less than high school (Grades 1-8 or no formal schooling)":"less than high school", 
+"High school incomplete (Grades 9-11 or Grade 12 with NO diploma)":"some of high school",
+ "High school graduate (Grade 12 with diploma or GED certificate)":"high school", 
+ "Some college, no degree (includes some community college)":"some college", 
+"Two-year associate degree from a college or university":"an associate degree", 
+"Four-year college or university degree/Bachelors degree (e.g., BS, BA, AB)":"an undergraduate degree", 
+"Some postgraduate or professional schooling, no postgraduate degree (e.g. some graduate school)":
+                    "some postgraduate schooling",
+"Postgraduate or professional degree, including masters, doctorate, medical or law degree":"a postgraduate degree"}
+
+Income_Mapping2={"Less than $10K":"less than $10K"
+                , "10K to under $20K":"10K - $20K"
+                ,"20K to under $30K": "20K - $30K"
+                ,"30K to under $40K": "30K - $40K"
+                , "40K to under $50K": "40K - $50K"
+                , "50K to under $75K": "50K - $75K"
+                , "75K to under $100K": "75K - $100K"
+                , "100K to under $150K": "100K - $150K"
+                , "$150K or more?":"$150K or more"}
+
+Parent_Mapping2={"Yes":"children", "No":"no children"}
+
+Married_Mapping2={"Yes":"married", "No":"not married"}
+
+Female_Mapping2={"Female":"woman", "Male":"man"}
+
+Person3=pd.DataFrame({
+    "Income":[IncomeI],
+    "Education":[EducationI],
+    "Parent": [ParentI],
+    "Married":[MarriedI],
+    "Female":[FemaleI],
+    "Age":[Age]
+})
+
+Person3=Person3.assign(Income=Person3.Income.map(Income_Mapping2))
+
+Person3=Person3.assign(Education=Person3.Education.map(Education_Mapping2))
+
+Person3=Person3.assign(Parent=Person3.Parent.map(Parent_Mapping2))
+
+Person3=Person3.assign(Married=Person3.Married.map(Married_Mapping2))
+
+Person3=Person3.assign(Female=Person3.Female.map(Female_Mapping2))
+
+st.write("You are a", Person3['Age'].loc[Person3.index[0]]
+, "year old", Person3['Female'].loc[Person3.index[0]], " who makes", Person3['Income'].loc[Person3.index[0]],
+ "and has completed", Person3['Education'].loc[Person3.index[0]],
+"education. You are", Person3['Married'].loc[Person3.index[0]],
+"with",Person3['Parent'].loc[Person3.index[0]], ".")
+
 if st.button("Show the results!"):
     if predicted_class[0]== 1:
         st.header("This model predicts that you are a LinkedIn user!")
     else:
         st.header("This model predicts that you are not a LinkedIn user!")
 
-    st.header(f"The probability that you are LinkedIn user is {probs[0][1]}")
+    st.header(f"The probability that you are LinkedIn user is {probs[0][1]}.")
 
 
 st.markdown('''

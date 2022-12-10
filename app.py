@@ -157,7 +157,7 @@ Income_Mapping2={"Less than $10K":"less than $10K"
                 , "100K to under $150K": "100K - $150K"
                 , "$150K or more?":"$150K or more"}
 
-Parent_Mapping2={"Yes":"children", "No":"no children"}
+Parent_Mapping2={"Yes":"children.", "No":"no children."}
 
 Married_Mapping2={"Yes":"married", "No":"not married"}
 
@@ -186,7 +186,7 @@ st.write("You are a", Person3['Age'].loc[Person3.index[0]]
 , "year old", Person3['Female'].loc[Person3.index[0]], " who makes", Person3['Income'].loc[Person3.index[0]],
  "and has completed", Person3['Education'].loc[Person3.index[0]],
 "education. You are", Person3['Married'].loc[Person3.index[0]],
-"with",Person3['Parent'].loc[Person3.index[0]], ".")
+"with",Person3['Parent'].loc[Person3.index[0]])
 
 if st.button("Show the results!"):
     if predicted_class[0]== 1:
